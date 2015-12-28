@@ -3,6 +3,7 @@ package com.example.a712948.geoquiz;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -17,6 +18,7 @@ public class GeoQuiz extends AppCompatActivity {
     private TextView mQuestion;
     private Button mPrevious;
     private int mCurrentIndex = 0;
+    private static final String INDEX_KEY = "index";
 
     private Question[] mQuestions = {
             new Question(R.string.question_africa, false),
@@ -32,6 +34,10 @@ public class GeoQuiz extends AppCompatActivity {
         setContentView(R.layout.activity_geo_quiz);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        if(savedInstanceState != null) {
+        mCurrentIndex = savedInstanceState.getInt(INDEX_KEY,0);
+        }
+
         mQuestion = (TextView) findViewById(R.id.question_text);
         setQuestion();
 
@@ -69,7 +75,7 @@ public class GeoQuiz extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mCurrentIndex == 0) {
-                    mCurrentIndex = mQuestions.length-1;
+                    mCurrentIndex = mQuestions.length - 1;
                     setQuestion();
                 } else {
                     mCurrentIndex = (mCurrentIndex - 1) % mQuestions.length;
@@ -116,5 +122,12 @@ public class GeoQuiz extends AppCompatActivity {
             Toast.makeText(GeoQuiz.this, R.string.incorrect,
                     Toast.LENGTH_SHORT).show();
         }
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i("TAG", "onSaveInstanceState");
+        savedInstanceState.putInt(INDEX_KEY,mCurrentIndex);
     }
 }
