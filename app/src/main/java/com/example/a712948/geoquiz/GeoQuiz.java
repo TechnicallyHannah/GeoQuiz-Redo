@@ -140,7 +140,6 @@ public class GeoQuiz extends AppCompatActivity {
             if(data == null){
                 return;
             }
-            Log.i("TAG", "Answer Was shown : " + mIsCheater);
             mIsCheater = wasAnswerShown(data);
         }
     }
@@ -150,7 +149,6 @@ public class GeoQuiz extends AppCompatActivity {
         boolean cheated = mIsCheater;
 
         if(!mIsCheater) {
-            Log.i("tag", "They Cheated  " + cheated);
             if (userPressedTrue == isAnswerTrue) {
                 Toast.makeText(GeoQuiz.this, R.string.correct,
                         Toast.LENGTH_SHORT).show();
