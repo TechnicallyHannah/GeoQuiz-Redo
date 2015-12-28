@@ -56,6 +56,13 @@ public class GeoQuiz extends AppCompatActivity {
                 setQuestion();
             }
         });
+        mQuestion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mCurrentIndex = (mCurrentIndex + 1) % mQuestions.length;
+                setQuestion();
+            }
+        });
     }
 
     @Override
