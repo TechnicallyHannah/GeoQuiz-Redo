@@ -38,16 +38,14 @@ public class GeoQuiz extends AppCompatActivity {
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(GeoQuiz.this, R.string.correct,
-                        Toast.LENGTH_SHORT).show();
+                checkAnswer(true);
             }
         });
         mFalseButton = (Button) findViewById(R.id.false_button);
         mFalseButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(GeoQuiz.this, R.string.incorrect,
-                        Toast.LENGTH_SHORT).show();
+                checkAnswer(false);
             }
         });
         mNextButton = (Button) findViewById(R.id.next);
@@ -81,8 +79,21 @@ public class GeoQuiz extends AppCompatActivity {
 
         return super.onOptionsItemSelected(item);
     }
-    private void setQuestion(){
+
+    private void setQuestion() {
         int question = mQuestions[mCurrentIndex].getTextId();
         mQuestion.setText(question);
+    }
+
+    private void checkAnswer(Boolean userPressedTrue) {
+        boolean isAnswerTrue = mQuestions[mCurrentIndex].isAnswerTrue();
+
+        if (userPressedTrue == isAnswerTrue) {
+            Toast.makeText(GeoQuiz.this, R.string.correct,
+                    Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(GeoQuiz.this, R.string.incorrect,
+                    Toast.LENGTH_SHORT).show();
+        }
     }
 }
