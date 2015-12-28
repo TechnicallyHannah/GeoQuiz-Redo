@@ -15,6 +15,7 @@ public class GeoQuiz extends AppCompatActivity {
     private Button mFalseButton;
     private Button mNextButton;
     private TextView mQuestion;
+    private Button mPrevious;
     private int mCurrentIndex = 0;
 
     private Question[] mQuestions = {
@@ -61,6 +62,19 @@ public class GeoQuiz extends AppCompatActivity {
             public void onClick(View v) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestions.length;
                 setQuestion();
+            }
+        });
+        mPrevious = (Button) findViewById(R.id.previous);
+        mPrevious.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mCurrentIndex == 0) {
+                    mCurrentIndex = mQuestions.length-1;
+                    setQuestion();
+                } else {
+                    mCurrentIndex = (mCurrentIndex - 1) % mQuestions.length;
+                    setQuestion();
+                }
             }
         });
     }
