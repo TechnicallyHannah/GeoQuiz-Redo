@@ -1,5 +1,7 @@
 package com.example.a712948.geoquiz;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -17,8 +19,13 @@ public class GeoQuiz extends AppCompatActivity {
     private Button mNextButton;
     private TextView mQuestion;
     private Button mPrevious;
+    private Button mCheatButton;
     private int mCurrentIndex = 0;
+    private boolean mIsCheater;
     private static final String INDEX_KEY = "index";
+    private static final String EXTRA_ANSWER_IS_TRUE = "answer";
+    private static final int REQUEST_CODE_KEY = 0;
+    private static final String ANSWER_IS_SHOWN = "shown";
 
     private Question[] mQuestions = {
             new Question(R.string.question_africa, false),
@@ -34,13 +41,22 @@ public class GeoQuiz extends AppCompatActivity {
         setContentView(R.layout.activity_geo_quiz);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        if(savedInstanceState != null) {
-        mCurrentIndex = savedInstanceState.getInt(INDEX_KEY,0);
+        if (savedInstanceState != null) {
+            mCurrentIndex = savedInstanceState.getInt(INDEX_KEY, 0);
         }
 
         mQuestion = (TextView) findViewById(R.id.question_text);
         setQuestion();
-
+        mCheatButton = (Button) findViewById(R.id.cheat_button);
+        mCheatButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(GeoQuiz.this, CheatActivity.class);
+                boolean answerIsTrue = mQuestions[mCurrentIndex].isAnswerTrue();
+                i.putExtra(EXTRA_ANSWER_IS_TRUE, answerIsTrue);
+                startActivityForResult(i, REQUEST_CODE_KEY);
+            }
+        });
         mTrueButton = (Button) findViewById(R.id.true_button);
         mTrueButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -111,15 +127,39 @@ public class GeoQuiz extends AppCompatActivity {
         int question = mQuestions[mCurrentIndex].getTextId();
         mQuestion.setText(question);
     }
+    private static boolean wasAnswerShown(Intent results){
+        return results.getBooleanExtra(ANSWER_IS_SHOWN, false);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode,int resultCode,Intent data){
+        if(resultCode != Activity.RESULT_OK){
+            return;
+        }
+        if(requestCode == REQUEST_CODE_KEY){
+            if(data == null){
+                return;
+            }
+            Log.i("TAG", "Answer Was shown : " + mIsCheater);
+            mIsCheater = wasAnswerShown(data);
+        }
+    }
 
     private void checkAnswer(Boolean userPressedTrue) {
         boolean isAnswerTrue = mQuestions[mCurrentIndex].isAnswerTrue();
+        boolean cheated = mIsCheater;
 
-        if (userPressedTrue == isAnswerTrue) {
-            Toast.makeText(GeoQuiz.this, R.string.correct,
-                    Toast.LENGTH_SHORT).show();
-        } else {
-            Toast.makeText(GeoQuiz.this, R.string.incorrect,
+        if(!mIsCheater) {
+            Log.i("tag", "They Cheated  " + cheated);
+            if (userPressedTrue == isAnswerTrue) {
+                Toast.makeText(GeoQuiz.this, R.string.correct,
+                        Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(GeoQuiz.this, R.string.incorrect,
+                        Toast.LENGTH_SHORT).show();
+            }
+        }else{
+            Toast.makeText(GeoQuiz.this, "You cheated",
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -128,6 +168,6 @@ public class GeoQuiz extends AppCompatActivity {
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
         Log.i("TAG", "onSaveInstanceState");
-        savedInstanceState.putInt(INDEX_KEY,mCurrentIndex);
+        savedInstanceState.putInt(INDEX_KEY, mCurrentIndex);
     }
 }
