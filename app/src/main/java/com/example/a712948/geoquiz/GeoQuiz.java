@@ -43,6 +43,7 @@ public class GeoQuiz extends AppCompatActivity {
         setSupportActionBar(toolbar);
         if (savedInstanceState != null) {
             mCurrentIndex = savedInstanceState.getInt(INDEX_KEY, 0);
+            mIsCheater = savedInstanceState.getBoolean(ANSWER_IS_SHOWN, false);
         }
 
         mQuestion = (TextView) findViewById(R.id.question_text);
@@ -168,5 +169,6 @@ public class GeoQuiz extends AppCompatActivity {
         super.onSaveInstanceState(savedInstanceState);
         Log.i("TAG", "onSaveInstanceState");
         savedInstanceState.putInt(INDEX_KEY, mCurrentIndex);
+        savedInstanceState.putBoolean(ANSWER_IS_SHOWN, mIsCheater);
     }
 }

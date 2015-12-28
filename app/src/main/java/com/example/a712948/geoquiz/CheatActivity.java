@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -43,6 +44,12 @@ public class CheatActivity extends AppCompatActivity {
         Intent data = new Intent();
         data.putExtra(ANSWER_IS_SHOWN, isAnswerShown);
         setResult(RESULT_OK, data);
+    }
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        super.onSaveInstanceState(savedInstanceState);
+        Log.i("TAG", "onSaveInstanceState");
+      //  savedInstanceState.putBoolean(ANSWER_IS_SHOWN, mIsCheater);
     }
 
 }
