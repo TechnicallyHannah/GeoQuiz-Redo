@@ -76,6 +76,7 @@ public class GeoQuiz extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 mCurrentIndex = (mCurrentIndex + 1) % mQuestions.length;
+                mIsCheater = false;
                 setQuestion();
             }
         });
