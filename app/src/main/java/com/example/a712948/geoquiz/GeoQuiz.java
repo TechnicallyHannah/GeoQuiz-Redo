@@ -150,7 +150,7 @@ public class GeoQuiz extends AppCompatActivity {
         boolean isAnswerTrue = mQuestions[mCurrentIndex].isAnswerTrue();
         boolean cheated = mIsCheater;
 
-        if(!mIsCheater) {
+        if(!cheated) {
             if (userPressedTrue == isAnswerTrue) {
                 Toast.makeText(GeoQuiz.this, R.string.correct,
                         Toast.LENGTH_SHORT).show();
