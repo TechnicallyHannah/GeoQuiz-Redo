@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -129,17 +128,18 @@ public class GeoQuiz extends AppCompatActivity {
         int question = mQuestions[mCurrentIndex].getTextId();
         mQuestion.setText(question);
     }
-    private static boolean wasAnswerShown(Intent results){
+
+    private static boolean wasAnswerShown(Intent results) {
         return results.getBooleanExtra(ANSWER_IS_SHOWN, false);
     }
 
     @Override
-    protected void onActivityResult(int requestCode,int resultCode,Intent data){
-        if(resultCode != Activity.RESULT_OK){
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode != Activity.RESULT_OK) {
             return;
         }
-        if(requestCode == REQUEST_CODE_KEY){
-            if(data == null){
+        if (requestCode == REQUEST_CODE_KEY) {
+            if (data == null) {
                 return;
             }
             mIsCheater = wasAnswerShown(data);
@@ -150,7 +150,7 @@ public class GeoQuiz extends AppCompatActivity {
         boolean isAnswerTrue = mQuestions[mCurrentIndex].isAnswerTrue();
         boolean cheated = mIsCheater;
 
-        if(!cheated) {
+        if (!cheated) {
             if (userPressedTrue == isAnswerTrue) {
                 Toast.makeText(GeoQuiz.this, R.string.correct,
                         Toast.LENGTH_SHORT).show();
@@ -158,7 +158,7 @@ public class GeoQuiz extends AppCompatActivity {
                 Toast.makeText(GeoQuiz.this, R.string.incorrect,
                         Toast.LENGTH_SHORT).show();
             }
-        }else{
+        } else {
             Toast.makeText(GeoQuiz.this, "You cheated",
                     Toast.LENGTH_SHORT).show();
         }
@@ -167,7 +167,6 @@ public class GeoQuiz extends AppCompatActivity {
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         super.onSaveInstanceState(savedInstanceState);
-        Log.i("TAG", "onSaveInstanceState");
         savedInstanceState.putInt(INDEX_KEY, mCurrentIndex);
         savedInstanceState.putBoolean(ANSWER_IS_SHOWN, mIsCheater);
     }
